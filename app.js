@@ -1,6 +1,6 @@
 
 
-angular.module("transport", ['faye','ui.router'])
+angular.module("transport", ['faye','ui.router','ngBootbox',])
 
    .config( function($stateProvider, $urlRouterProvider) {
 
@@ -10,11 +10,11 @@ angular.module("transport", ['faye','ui.router'])
                     controller: 'HomeController',
                     templateUrl: 'templates/home.html'
                 })
-                .state('dash', {
-                    url: '/dash',
-                    controller: 'DashController',
-                    templateUrl: 'templates/dash.html'
-                })
+                // .state('dash', {
+                //     url: '/dash',
+                //     controller: 'DashController',
+                //     templateUrl: 'templates/dash.html'
+                // })
 
                 .state('users', {
                     url: '/users',
@@ -26,20 +26,27 @@ angular.module("transport", ['faye','ui.router'])
                     controller: "TripController",
                     templateUrl: 'templates/trip.html'
                 })
+                .state('vehicle', {
+                    url: '/vehicle',
+                    controller: "VehicleController",
+                    templateUrl: 'templates/vehicle.html'
+                })
                 .state('parcel', {
                     url: '/parcel',
                     controller: "ParcelController",
                     templateUrl: 'templates/history.html'
                 })
-                .state('history', {
-                    url: '/history',
-                    controller: "HistoryController",
-                    templateUrl: 'templates/history.html'
+                .state('settings', {
+                    url: '/settings',
+                    controller: "SettingsController",
+                    templateUrl: 'templates/settings.html'
                 })
             ;
             $urlRouterProvider.otherwise('/');
 
-        })/*
+        })
+        
+        /*
         .config(function(NotificationProvider) {
             NotificationProvider.setOptions({
                 delay: 5000,
@@ -60,7 +67,7 @@ angular.module("transport", ['faye','ui.router'])
         })
 
     .factory('FayeFactory', function($faye, $rootScope) {
-            return $faye("http://192.168.0.118:8888/");
+            return $faye("http://localhost:8888/");
     })
       
     .service('SoundNotif', function () {
@@ -72,31 +79,54 @@ angular.module("transport", ['faye','ui.router'])
             var danger = new Audio('sounds/danger.mp3');
             switch (which) {
                 case 'critical':
-                    critical.play();
+                critical.play();
                 break;
                 case 'warning':
-                    warning.play();
+                warning.play();
                 break;
                 case 'error':
-                    error.play();
+                error.play();
                 break;
                 case 'success':
-                    success.play();
+                success.play();
                 break;
-
+                
             }
         };
     })
-
-.controller("HomeController",function($scope, $rootScope){
     
+.controller("HomeController", function() {
+
+})
+.controller("VehicleController",function($scope, $rootScope, FayeFactory){
+    $scope.vehicles= [];
+
+    $scope.create= function(v) {
+        FayeFactory.publish('/create/Vehicle', v);    
+        console.info("CReating a buuuuuuuuuuuuuuuuus");    
+    }
+    $scope.update= function(v) {
+        FayeFactory.publish('/update/Vehicle', v);        
+    }
+    $scope.delete= function(v) {
+        FayeFactory.publish('/delete/Vehicle', v);        
+    }
+
+    FayeFactory.subscribe('/list/Vehicle', function(objs) {
+        $scope.vehicles= objs;
+        console.log(objs);
+    });
+    
+    FayeFactory.publish('/list/Vehicle', {});
+    console.warn("VehicleController");
+
 })
 
 .controller("SettingsController",function($scope, $rootScope){
 
 })
 
-.controller("HistoryController",function($scope, $rootScope, FayeFactory){
+.controller("ParcelController",function($scope, $rootScope, FayeFactory){
     $scope.journal= [];
     $scope.showDownloadLink=false;
 
@@ -119,9 +149,6 @@ angular.module("transport", ['faye','ui.router'])
 
 })
 
-.controller("MessagesController", function() {
-
-})
 
 .controller("UserController",function($scope,FayeFactory){
     $scope.addingNewUser=false;
