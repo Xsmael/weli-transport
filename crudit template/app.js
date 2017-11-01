@@ -26,11 +26,6 @@ angular.module("transport", ['faye','ui.router','ngBootbox',])
                     controller: "TripController",
                     templateUrl: 'templates/trip.html'
                 })
-                .state('ticket', {
-                    url: '/ticket',
-                    controller: "TicketController",
-                    templateUrl: 'templates/ticket.html'
-                })
                 .state('vehicle', {
                     url: '/vehicle',
                     controller: "VehicleController",
@@ -39,7 +34,7 @@ angular.module("transport", ['faye','ui.router','ngBootbox',])
                 .state('parcel', {
                     url: '/parcel',
                     controller: "ParcelController",
-                    templateUrl: 'templates/parcel.html'
+                    templateUrl: 'templates/history.html'
                 })
                 .state('settings', {
                     url: '/settings',
@@ -106,20 +101,14 @@ angular.module("transport", ['faye','ui.router','ngBootbox',])
 .controller("VehicleController",function($scope, $rootScope, FayeFactory){
     $scope.vehicles= [];
 
-    $scope.dialogOptions= {
-        scope: $scope
-    }
-
     $scope.create= function(v) {
-        FayeFactory.publish('/create/Vehicle', v);
-        console.log("Creating...");    
+        FayeFactory.publish('/create/Vehicle', v);    
     }
     $scope.update= function(v) {
         FayeFactory.publish('/update/Vehicle', v);        
     }
     $scope.delete= function(v) {
         FayeFactory.publish('/delete/Vehicle', v);        
-        console.log("Deleting...");    
     }
 
     FayeFactory.subscribe('/list/Vehicle', function(objs) {

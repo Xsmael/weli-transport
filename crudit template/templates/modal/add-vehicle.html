@@ -11,7 +11,7 @@
         margin-top: -5px;
     }
 </style>
-<div>
+<div ng-controller="VehicleController">
     <form>
         <input hidden ng-model="v._id" />
         <div class="form-group">
@@ -50,18 +50,18 @@
 
 
 <script>
-    // setInterval(function(){
-    //     $("#lat").change();
-    //     $("#long").change();
-    //     $("#addr").val( $("#placepicker").val() );
-    //     $("#addr").change();
+    setInterval(function(){
+        $("#lat").change();
+        $("#long").change();
+        $("#addr").val( $("#placepicker").val() );
+        $("#addr").change();
 
-    // },10);
-    // setTimeout(function(){
-    //     $("#placepicker").placepicker({
-    //         placeChanged: function(place) {
-    //             $("#map-address").html(place.formatted_address);
-    //         }
-    //     })        
-    // },100);
+    },10);
+    setTimeout(function(){
+        $("#placepicker").placepicker({
+            placeChanged: function(place) {
+                $("#map-address").html(place.formatted_address);
+            }
+        })        
+    },100);
 </script>
