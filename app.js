@@ -1,6 +1,6 @@
 
 
-angular.module("transport", ['faye','ui.router','ngBootbox',])
+angular.module("transport", ['faye','ui.router', 'ui.toggle','ngBootbox',])
 
    .config( function($stateProvider, $urlRouterProvider) {
 
@@ -132,89 +132,76 @@ angular.module("transport", ['faye','ui.router','ngBootbox',])
 
 })
 
-.controller("SettingsController",function($scope, $rootScope){
+.controller("TicketController",function($scope, $rootScope, FayeFactory){
+    $scope.Tickets= [];
 
+    $scope.create= function(o) {
+        FayeFactory.publish('/create/Ticket', o);    
+    }
+    $scope.update= function(o) {
+        FayeFactory.publish('/update/Ticket', o);        
+    }
+    $scope.delete= function(o) {
+        FayeFactory.publish('/delete/Ticket', o);        
+    }
+
+    FayeFactory.subscribe('/list/Ticket', function(objs) {
+        $scope.vehicles= objs;
+        console.log(objs);
+    });
+    
+    FayeFactory.publish('/list-req/Ticket', {});
+    console.warn("TicketController");
 })
 
 .controller("ParcelController",function($scope, $rootScope, FayeFactory){
-    $scope.journal= [];
-    $scope.showDownloadLink=false;
+    $scope.Parcels= [];
 
-    FayeFactory.subscribe('/RealtimeJournal', function(j) {
-        $scope.journal.push(j);
-        console.log(j);
-    });
-
-    FayeFactory.subscribe('/XlsJournalReady', function(link) {
-        if(link){
-            $scope.showDownloadLink=true;
-            $scope.link=link;
-        }
-    });
-    
-
-    $scope.generateJournal= function () {
-        FayeFactory.publish('/XlsGenerateJounal',{})
+    $scope.create= function(o) {
+        FayeFactory.publish('/create/Parcel', o);    
+    }
+    $scope.update= function(o) {
+        FayeFactory.publish('/update/Parcel', o);        
+    }
+    $scope.delete= function(o) {
+        FayeFactory.publish('/delete/Parcel', o);        
     }
 
+    FayeFactory.subscribe('/list/Parcel', function(objs) {
+        $scope.vehicles= objs;
+        console.log(objs);
+    });
+    
+    FayeFactory.publish('/list-req/Parcel', {});
+    console.warn("ParcelController");
 })
 
+.controller("TripController",function($scope, $rootScope, FayeFactory){
+    $scope.Trips= [];
 
-.controller("UserController",function($scope,FayeFactory){
-    $scope.addingNewUser=false;
-    $scope.watingForId= false;
-    $scope.users= [];
+    $scope.create= function(o) {
+        FayeFactory.publish('/create/Trip', o); 
+        console.log(o);   
+    }
+    $scope.update= function(o) {
+        FayeFactory.publish('/update/Trip', o);        
+    }
+    $scope.delete= function(o) {
+        FayeFactory.publish('/delete/Trip', o);        
+    }
 
-    FayeFactory.subscribe('/CardSwiped', function (card) {
-        if(card.card_id){
-            $scope.watingForId= false;
-            $scope.addingNewUser=true;
-    
-            $scope.card_id= card.card_id;
-        }
+    FayeFactory.subscribe('/list/Trip', function(objs) {
+        $scope.vehicles= objs;
+        console.log(objs);
     });
-
-    FayeFactory.subscribe('/ListAcc', function (data) {
-        $scope.users= data;    
-    });
-    FayeFactory.publish('/ListAccReq',{});
     
-
-    $scope.newUser= function() { 
-        $scope.watingForId=true;
-        FayeFactory.publish('/CardIdReq',{});
-    }
-    $scope.save= function() {
-        var obj= {
-            name: $scope.name,
-            phone: $scope.phone,
-            email: $scope.email,
-            card_id: $scope.card_id
-        };
-        $scope.users.push(obj);
-        FayeFactory.publish('/NewAccReq',obj);
-        
-        $scope.firstname="";
-        $scope.lastname="";
-        $scope.phone="";
-        $scope.email="";
-        $scope.card_id="";
-        $scope.addingNewUser=false;
-    }
-    
-    $scope.clearAll= function() {
-        $scope.users= [];
-    }
-    
-    $scope.show= function() {
-        alert($scope.username+" "+ $scope.age+" "+$scope.email);
-    }
-
-    $scope.deleteUser= function(user) {
-        FayeFactory.publish('/DelAccReq',user);        
-    }
+    FayeFactory.publish('/list-req/Trip', {});
+    console.warn("TripController");
 })
 
+.controller("SettingsController",function($scope, $rootScope){
+
+})
 
 ;
 

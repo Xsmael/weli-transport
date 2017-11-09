@@ -11,39 +11,40 @@
         margin-top: -5px;
     }
 </style>
+            
 <div>
     <form>
-        <input hidden ng-model="v._id" />
+        <input hidden ng-model="o._id" />
         <div class="form-group">
-            <input class="form-control" placeholder="Type" ng-model="v.type" />
+            <input class="form-control" placeholder="De" ng-model="o.from" />
         </div>
         <div class="form-group">
-            <input class="form-control" placeholder="Marque" ng-model="v.brand" />
+            <input class="form-control" placeholder="A" ng-model="o.to" />
         </div>
         <div class="form-group">
-            <input class="form-control" placeholder="Model" ng-model="v.model" />
+            <input class="form-control" placeholder="Heure" ng-model="o.time" />
         </div>
     
         <div class="form-group">
-            <input class="form-control" placeholder="Immatriculation" ng-model="v.numberplate" />
+            <input class="form-control" placeholder="Vehicule" ng-model="o.vehicle" />
         </div>
         
         <div class="form-group">
-            <input class="form-control" placeholder="Nombre de places" ng-model="v.seats" />
+            <input class="form-control" placeholder="Jours" ng-model="o.dssays" />
         </div>
-        
-        <div class="form-group">
-            <textarea class="form-control" placeholder="Autres details" ng-model="v.details" />
-        </div>
-    
-        <div class="form-group">
-            <ng-bs3-datepicker  ng-model="v.date_running" placeholder="Date de mise en servie" language="fr-ca" date-format="DD-MM-YYYY">
-        </div>
-    
+            <toggle class="filterSwitch" ng-model="o.days.monday" ng-change="changed()" on="Lundi" off="Lundi" onstyle="btn-success" offstyle="btn-default" size="btn-sm"></toggle>
+            <toggle class="filterSwitch" ng-model="o.days.tuesday" ng-change="changed()" on="Mardi" off="Mardi" onstyle="btn-success" offstyle="btn-default" size="btn-sm"></toggle>
+            <toggle class="filterSwitch" ng-model="o.days.wednesday" ng-change="changed()" on="Mercredi" off="Mercredi" onstyle="btn-success" offstyle="btn-default" size="btn-sm"></toggle>
+            <toggle class="filterSwitch" ng-model="o.days.thursday" ng-change="changed()" on="Jeudi" off="Jeudi" onstyle="btn-success" offstyle="btn-default" size="btn-sm"></toggle>
+            <toggle class="filterSwitch" ng-model="o.days.friday" ng-change="changed()" on="Vendredi" off="Vendredi" onstyle="btn-success" offstyle="btn-default" size="btn-sm"></toggle>
+            <toggle class="filterSwitch" ng-model="o.days.saturday" ng-change="changed()" on="Samedi" off="Samedi" onstyle="btn-success" offstyle="btn-default" size="btn-sm"></toggle>
+            <toggle class="filterSwitch" ng-model="o.days.sunday" ng-change="changed()" on="Dimanche" off="Dimanche" onstyle="btn-success" offstyle="btn-default" size="btn-sm"></toggle>
+        <br>
+        <br>
     
         <div class="btn-group btn-group-justified" role="group" aria-label="Justified button group">
             <a data-bb-handler="cancel" class="btn btn-danger" role="button" data-dismiss="modal">Annuler</a>
-            <a data-bb-handler="confirm" class="btn btn-default" role="button" data-dismiss="modal" ng-click="create(v)">Enregistrer</a>
+            <a data-bb-handler="confirm" class="btn btn-default" role="button" data-dismiss="modal" ng-click="create(o)">Enregistrer</a>
         </div>
     </form>
 </div>
