@@ -124,7 +124,7 @@ angular.module("transport", ['faye','ui.router', 'ui.toggle','ngBootbox',])
 
     FayeFactory.subscribe('/list/Vehicle', function(objs) {
         $scope.vehicles= objs;
-        console.log(objs);
+        console.info(objs);
     });
     
     FayeFactory.publish('/list-req/Vehicle', {});
@@ -134,6 +134,10 @@ angular.module("transport", ['faye','ui.router', 'ui.toggle','ngBootbox',])
 
 .controller("TicketController",function($scope, $rootScope, FayeFactory){
     $scope.Tickets= [];
+
+    $scope.dialogOptions= {
+        scope: $scope
+    }
 
     $scope.create= function(o) {
         FayeFactory.publish('/create/Ticket', o);    
@@ -157,6 +161,10 @@ angular.module("transport", ['faye','ui.router', 'ui.toggle','ngBootbox',])
 .controller("ParcelController",function($scope, $rootScope, FayeFactory){
     $scope.Parcels= [];
 
+    $scope.dialogOptions= {
+        scope: $scope
+    }
+
     $scope.create= function(o) {
         FayeFactory.publish('/create/Parcel', o);    
     }
@@ -178,6 +186,11 @@ angular.module("transport", ['faye','ui.router', 'ui.toggle','ngBootbox',])
 
 .controller("TripController",function($scope, $rootScope, FayeFactory){
     $scope.Trips= [];
+    $scope.vehicles= [];
+
+    $scope.dialogOptions= {
+        scope: $scope
+    }
 
     $scope.create= function(o) {
         FayeFactory.publish('/create/Trip', o); 
@@ -195,7 +208,13 @@ angular.module("transport", ['faye','ui.router', 'ui.toggle','ngBootbox',])
         console.log(objs);
     });
     
+    FayeFactory.subscribe('/list/Vehicle', function(objs) {
+        $scope.vehicles= objs;
+        console.log(objs);
+    })
+    
     FayeFactory.publish('/list-req/Trip', {});
+    FayeFactory.publish('/list-req/Vehicle', {});
     console.warn("TripController");
 })
 

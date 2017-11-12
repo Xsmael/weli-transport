@@ -22,11 +22,11 @@
             <input class="form-control" placeholder="A" ng-model="o.to" />
         </div>
         <div class="form-group">
-            <input class="form-control" placeholder="Heure" ng-model="o.time" />
+            <input class="form-control" placeholder="Heure" type="time" ng-model="o.time" />
         </div>
     
         <div class="form-group">
-            <input class="form-control" placeholder="Vehicule" ng-model="o.vehicle" />
+            <select class="form-control" placeholder="Vehicule" ng-options="vehicle as vehicle.brand for vehicle in vehicles track by vehicle._id" ng-model="o.vehicle"></select>
         </div>
         
         <div class="form-group">
