@@ -133,7 +133,7 @@ angular.module("transport", ['faye','ui.router', 'ui.toggle','ngBootbox',])
 })
 
 .controller("TicketController",function($scope, $rootScope, FayeFactory){
-    $scope.Tickets= [];
+    $scope.tickets= [];
 
     $scope.dialogOptions= {
         scope: $scope
@@ -150,7 +150,7 @@ angular.module("transport", ['faye','ui.router', 'ui.toggle','ngBootbox',])
     }
 
     FayeFactory.subscribe('/list/Ticket', function(objs) {
-        $scope.vehicles= objs;
+        $scope.tickets= objs;
         console.log(objs);
     });
     
@@ -159,7 +159,7 @@ angular.module("transport", ['faye','ui.router', 'ui.toggle','ngBootbox',])
 })
 
 .controller("ParcelController",function($scope, $rootScope, FayeFactory){
-    $scope.Parcels= [];
+    $scope.parcels= [];
 
     $scope.dialogOptions= {
         scope: $scope
@@ -176,7 +176,7 @@ angular.module("transport", ['faye','ui.router', 'ui.toggle','ngBootbox',])
     }
 
     FayeFactory.subscribe('/list/Parcel', function(objs) {
-        $scope.vehicles= objs;
+        $scope.parcels= objs;
         console.log(objs);
     });
     

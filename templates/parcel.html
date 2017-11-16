@@ -32,11 +32,11 @@
         <tbody>
             <tr class="active" ng-repeat="p in parcels">
                 <td>{{$index+1}}</td>
-                <td>{{p.type}}</td>
-                <td>{{p.brand}}</td>
-                <td>{{p.model}}</td>
-                <td>{{p.numberplate}}</td>
-                <td>{{p.seats}}</td>
+                <td>{{p.from}}</td>
+                <td>{{p.to}}</td>
+                <td>{{p.content}}</td>
+                <td>{{p.sender}}</td>
+                <td>{{p.receiver}}</td>
                 <td>
                     <button type="button" class="btn btn-primary">
                                 <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> edit

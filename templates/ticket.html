@@ -1,6 +1,6 @@
 <div class="row">
     <button class="btn btn-primary"
-        ng-bootbox-title="<i class='fa fa-tags fa-4x'></i><br /> Nouveau Ticket"
+        ng-bootbox-title="<i class='fa fa-tags'></i><br /> Nouveau Ticket"
         ng-bootbox-custom-dialog
         ng-bootbox-custom-dialog-template="./templates/modal/add-ticket.html"
         ng-bootbox-buttons="customDialogButtons"
@@ -33,11 +33,12 @@
         <tbody>
             <tr class="active" ng-repeat="t in tickets">
                 <td>{{$index+1}}</td>
-                <td>{{t.type}}</td>
-                <td>{{t.brand}}</td>
-                <td>{{t.model}}</td>
-                <td>{{t.numberplate}}</td>
-                <td>{{t.seats}}</td>
+                <td>{{t.from}}</td>
+                <td>{{t.to}}</td>
+                <td>{{t.seat_no}}</td>
+                <td>{{t.date_departure}}</td>
+                <td>{{t.date_return}}</td>
+                <td>{{t.traveller}}</td>
                 <td>
                     <button type="button" class="btn btn-primary">
                                 <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> edit
