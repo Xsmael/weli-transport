@@ -33,9 +33,9 @@
                 <td>{{$index+1}}</td>
                 <td>{{t.from}}</td>
                 <td>{{t.to}}</td>
-                <td>{{t.time}}</td>
-                <td>{{t.vehicle}}</td>
-                <td>{{t.days}}</td>
+                <td>{{t.time | date: 'hh:mm'}}</td>
+                <td>{{ printVehicle(t.vehicle) }} </td>
+                <td> <span ng-repeat=" day in getSelectedDays(t.days)"> <span  class="label label-primary" >{{day}}</span> </span> </td>
                 <td>
                     <button type="button" class="btn btn-primary">
                                 <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> edit

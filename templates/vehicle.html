@@ -23,9 +23,7 @@
                 <th> Modele</th>
                 <th> Plaque</th>
                 <th> Places</th>
-                <th>
-                    <button type="button" class="btn btn-warning" ng-click="clearAll()">Delete All</button>
-                </th>
+
             </tr>
         </thead>
         <tbody>
@@ -37,9 +35,16 @@
                 <td>{{v.numberplate}}</td>
                 <td>{{v.seats}}</td>
                 <td>
-                    <button type="button" class="btn btn-primary">
-                                <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> edit
-                            </button>
+                    
+                    <button class="btn btn-primary" ng-click="edit(v)"
+                        ng-bootbox-title="<i class='fa fa-bus' ></i> Nouveau Bus "
+                        ng-bootbox-custom-dialog
+                        ng-bootbox-custom-dialog-template="./templates/modal/add-vehicle.html"
+                        ng-bootbox-buttons="customDialogButtons"
+                        ng-bootbox-options="dialogOptions">
+                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                        Editer
+                    </button>
 
                     <button type="button" class="btn btn-danger" ng-click="delete(v)">
                                 <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> delete

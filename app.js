@@ -63,17 +63,27 @@ angular.module("transport", ['faye','ui.router', 'ui.toggle','ngBootbox',])
                 positionY: 'bottom'
             });
         })*/
-        .filter('fromMap', function() {
-            return function(input) {
-                var out = {};
-                input.forEach((v, k) => out[k] = v);
-                return out;
-            };
-        })
+
 
     .factory('FayeFactory', function($faye, $rootScope) {
-            return $faye("http://localhost:8888/");
+            return $faye("http://192.168.43.196:8888/");
     })
+    .service("VehicleService", function(FayeFactory,$rootScope) {
+        FayeFactory.subscribe('/list/Vehicle', function(vehicles) {            
+            $rootScope.vehicles=vehicles;
+        });
+        FayeFactory.publish('/list-req/Vehicle', {});       
+        
+        this.getVehicle=  function(id) {
+            for( var i= 0 ; i<  $rootScope.vehicles.length; i++) { 
+                var v= $rootScope.vehicles[i];
+                if(v._id == id) {
+                    return v;
+                }
+            }
+        }
+        
+    }) 
       
     .service('SoundNotif', function () {
         this.play= function(which) {
@@ -105,17 +115,27 @@ angular.module("transport", ['faye','ui.router', 'ui.toggle','ngBootbox',])
 })
 .controller("VehicleController",function($scope, $rootScope, FayeFactory){
     $scope.vehicles= [];
+    
+    $scope.isEditing= false;
 
     $scope.dialogOptions= {
         scope: $scope
     }
 
+
+    $scope.edit= function(v) {
+        $scope.toEdit= v;
+        $scope.isEditing= true;
+    }
+
     $scope.create= function(v) {
         FayeFactory.publish('/create/Vehicle', v);
         console.log("Creating...");    
+        $scope.isEditing= false;    
     }
     $scope.update= function(v) {
-        FayeFactory.publish('/update/Vehicle', v);        
+        FayeFactory.publish('/update/Vehicle', v);   
+        $scope.isEditing= false;    
     }
     $scope.delete= function(v) {
         FayeFactory.publish('/delete/Vehicle', v);        
@@ -184,9 +204,10 @@ angular.module("transport", ['faye','ui.router', 'ui.toggle','ngBootbox',])
     console.warn("ParcelController");
 })
 
-.controller("TripController",function($scope, $rootScope, FayeFactory){
-    $scope.Trips= [];
+.controller("TripController",function($scope, $rootScope, FayeFactory,VehicleService,$interval){
+    $scope.trips= [];
     $scope.vehicles= [];
+    $scope.vehicles= VehicleService.vehicles;
 
     $scope.dialogOptions= {
         scope: $scope
@@ -204,17 +225,26 @@ angular.module("transport", ['faye','ui.router', 'ui.toggle','ngBootbox',])
     }
 
     FayeFactory.subscribe('/list/Trip', function(objs) {
-        $scope.vehicles= objs;
+        $scope.trips= objs;
         console.log(objs);
     });
-    
-    FayeFactory.subscribe('/list/Vehicle', function(objs) {
-        $scope.vehicles= objs;
-        console.log(objs);
-    })
+
     
     FayeFactory.publish('/list-req/Trip', {});
-    FayeFactory.publish('/list-req/Vehicle', {});
+    $interval(function () {
+        FayeFactory.publish('/list-req/Vehicle', {});
+    },10000);
+    
+    $scope.printVehicle= function(id) {
+        var v= VehicleService.getVehicle(id);
+        console.log(v);
+        return v.brand+'['+v.numberplate+']';
+    }
+    $scope.getSelectedDays= function(days) {
+        var selectedDays= Object.keys(days);      
+        return selectedDays;
+    }
+
     console.warn("TripController");
 })
 

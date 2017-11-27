@@ -26,6 +26,15 @@
     <script src="./node_modules/angular-ui-router/release/angular-ui-router.js" ></script>
     <script src="app.js" ></script>
 
+    <style>
+    .floating-logo {
+        position: absolute;
+        right: 15px;
+        bottom: 15px;
+        
+    }
+    </style>
+
 </head>
 
 <body ng-app="transport">
@@ -96,9 +105,11 @@
 
     </div>
 
+    <div class="floating-logo">
+        <img style="height: 100px;" src="./img/logo-sd.png" alt="">
+    </div>
 
-    <br>
-    <div class="jumbotron" style="margin-top:300px;">
+    <div ng-hide="true" class="jumbotron" style="margin-top:300px;">
         <div class="row">
             <div class="col-md-2 cp1 "></div>
             <div class="col-md-2 cp2"></div>
