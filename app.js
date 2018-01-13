@@ -1,6 +1,6 @@
 
 
-angular.module("transport", ['faye','ui.router', 'ui.toggle','ngBootbox',])
+angular.module("transport", ['faye','ui.router', 'ui.toggle','ngBootbox', 'smart-table'])
 
    .config( function($stateProvider, $urlRouterProvider) {
 
@@ -66,7 +66,7 @@ angular.module("transport", ['faye','ui.router', 'ui.toggle','ngBootbox',])
 
 
     .factory('FayeFactory', function($faye, $rootScope) {
-            return $faye("http://192.168.43.196:8888/");
+            return $faye("http://localhost:8888/");
     })
     .service("VehicleService", function(FayeFactory,$rootScope) {
         FayeFactory.subscribe('/list/Vehicle', function(vehicles) {            
@@ -114,8 +114,7 @@ angular.module("transport", ['faye','ui.router', 'ui.toggle','ngBootbox',])
 
 })
 .controller("VehicleController",function($scope, $rootScope, FayeFactory){
-    $scope.vehicles= [];
-    
+    $scope.vehicles= [];  
     $scope.isEditing= false;
 
     $scope.dialogOptions= {
@@ -154,16 +153,24 @@ angular.module("transport", ['faye','ui.router', 'ui.toggle','ngBootbox',])
 
 .controller("TicketController",function($scope, $rootScope, FayeFactory){
     $scope.tickets= [];
+    $scope.isEditing= false;        
 
     $scope.dialogOptions= {
         scope: $scope
     }
 
+    $scope.edit= function(o) {
+        $scope.toEdit= o;
+        $scope.isEditing= true;
+    }
+
     $scope.create= function(o) {
-        FayeFactory.publish('/create/Ticket', o);    
+        FayeFactory.publish('/create/Ticket', o);
+        $scope.isEditing= false;        
     }
     $scope.update= function(o) {
-        FayeFactory.publish('/update/Ticket', o);        
+        FayeFactory.publish('/update/Ticket', o);     
+        $scope.isEditing= false;        
     }
     $scope.delete= function(o) {
         FayeFactory.publish('/delete/Ticket', o);        
@@ -208,6 +215,12 @@ angular.module("transport", ['faye','ui.router', 'ui.toggle','ngBootbox',])
     $scope.trips= [];
     $scope.vehicles= [];
     $scope.vehicles= VehicleService.vehicles;
+    $scope.isEditing= false; 
+
+    $scope.edit= function(o) {
+        $scope.toEdit= o;
+        $scope.isEditing= true;
+    }
 
     $scope.dialogOptions= {
         scope: $scope
@@ -215,11 +228,15 @@ angular.module("transport", ['faye','ui.router', 'ui.toggle','ngBootbox',])
 
     $scope.create= function(o) {
         FayeFactory.publish('/create/Trip', o); 
+        $scope.isEditing= false; 
         console.log(o);   
     }
+
     $scope.update= function(o) {
-        FayeFactory.publish('/update/Trip', o);        
+        FayeFactory.publish('/update/Trip', o);   
+        $scope.isEditing= false;        
     }
+
     $scope.delete= function(o) {
         FayeFactory.publish('/delete/Trip', o);        
     }
@@ -229,11 +246,8 @@ angular.module("transport", ['faye','ui.router', 'ui.toggle','ngBootbox',])
         console.log(objs);
     });
 
-    
+
     FayeFactory.publish('/list-req/Trip', {});
-    $interval(function () {
-        FayeFactory.publish('/list-req/Vehicle', {});
-    },10000);
     
     $scope.printVehicle= function(id) {
         var v= VehicleService.getVehicle(id);
@@ -244,12 +258,33 @@ angular.module("transport", ['faye','ui.router', 'ui.toggle','ngBootbox',])
         var selectedDays= Object.keys(days);      
         return selectedDays;
     }
-
+    
     console.warn("TripController");
 })
 
-.controller("SettingsController",function($scope, $rootScope){
-
+.controller("SettingsController",function($scope, $rootScope, FayeFactory){
+    $scope.Settings= {};
+    
+    
+    $scope.create= function(o) {
+        if(!$scope.Settings.stationName)
+        FayeFactory.publish('/create/Setting', o);   
+        else 
+        $scope.update(o);   
+    }
+    
+    $scope.update= function(o) {
+        FayeFactory.publish('/update/Setting', o);   
+    }
+    
+    $scope.delete= function(o) {
+        FayeFactory.publish('/delete/Setting', o);        
+    }
+    
+    FayeFactory.subscribe('/list/Setting', function(objs) {
+        $scope.Settings= objs[0];
+    });
+    FayeFactory.publish('/list-req/Setting', {});
 })
 
 ;

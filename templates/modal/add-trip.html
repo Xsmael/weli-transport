@@ -12,7 +12,7 @@
     }
 </style>
             
-<div>
+<div  ng-init="o= isEditing? toEdit: null" >
     <form>
         <input hidden ng-model="o._id" />
         <div class="form-group">
@@ -43,9 +43,10 @@
         <br>
     
         <div class="btn-group btn-group-justified" role="group" aria-label="Justified button group">
-            <a data-bb-handler="cancel" class="btn btn-danger"  data-dismiss="modal">Annuler</a>
-            <a data-bb-handler="confirm" class="btn btn-default"  data-dismiss="modal" ng-click="create(o)">Enregistrer</a>
-        </div>
+            <a class="btn btn-danger"  data-dismiss="modal">Annuler</a>
+            <a ng-show="!isEditing" class="btn btn-default"  data-dismiss="modal" ng-click="create(o)">Enregistrer</a>
+            <a ng-show="isEditing" class="btn btn-default"  data-dismiss="modal" ng-click="update(o)">Enregistrer</a>
+       </div>
     </form>
 </div>
 
